@@ -17,20 +17,49 @@ export const addFirebaseItems = async (item) => {
   } catch (error) {
     console.log(error);
   }
-}
+};
 
 export const updateFirebaseItems = async (item) => {
   try {
-    await db.collection('todos').doc(item.id).update(item);
+    await db
+      .collection('todos')
+      .doc(item.id)
+      .update(item);
   } catch (error) {
     console.log(error);
   }
-}
+};
 
 export const deleteFirebaseItems = async (item) => {
   try {
-    await db.collection('todos').doc(item.id).delete();
+    await db
+      .collection('todos')
+      .doc(item.id)
+      .delete();
   } catch (error) {
     console.log(error);
   }
-}
+};
+
+export const storeUserInfo = async (user) => {
+  const { uid } = user;
+  const userDoc = await db
+    .collection('users')
+    .doc(uid)
+    .get();
+  if (!userDoc.exists) {
+    await db
+      .collection('users')
+      .doc(uid)
+      .set({ name: user.displayName });
+    return {
+      name: user.displayName,
+      id: uid,
+    };
+  } else {
+    return {
+      id: uid,
+      ...userDoc.data(),
+    };
+  }
+};

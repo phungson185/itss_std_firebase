@@ -14,3 +14,11 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 export const db = firebase.firestore();
+export default firebase;
+export const auth = firebase.auth();
+
+export const uiConfig = {
+  signInFlow: 'popup',
+  signInSuccessUrl: '/login',
+  signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
+};

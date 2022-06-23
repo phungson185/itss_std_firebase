@@ -25,7 +25,7 @@ function Todo() {
 
   const handleDeleteAll = () => {
     items.forEach((item) => deleteAllTodo(item));
-  }
+  };
 
   return (
     <article className='panel is-danger'>

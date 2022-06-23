@@ -23,7 +23,7 @@ export const useFirebaseStorage = () => {
   const deleteAllTodo = async () => {
     await Promise.all(items.map((i) => deleteFirebaseItems(i)));
     setItems([]);
-  }
+  };
 
   return [items, addTodo, updateTodo, deleteAllTodo];
 };
