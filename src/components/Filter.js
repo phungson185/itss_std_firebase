@@ -1,35 +1,39 @@
-/* 
-  【Filterコンポーネント】
- ・該当するTodoをステータス毎にで分けてリスト表示する
- ・タブで表示する
- ・サポートするステータスは「すべて」「未完了」「完了済み」
-*/
-function Filter({ value, onChange }) {
+import TodoItem from './TodoItem';
+import { useEffect, useState } from 'react';
 
-  const handleClick = (key, e) => {
-    e.preventDefault();
-    onChange(key);
+function Filter({ items, handleCheck }) {
+  const [displayItems, setDisplayItems] = useState([]);
+  const [valueFilter, setValueFilter] = useState('all');
+
+  useEffect(() => {
+    if (valueFilter === 'all') setDisplayItems(items);
+    if (valueFilter === 'todo') setDisplayItems(items.filter((item) => !item.done));
+    if (valueFilter === 'done') setDisplayItems(items.filter((item) => item.done));
+  }, [items, valueFilter]);
+
+  const handleClick = (status) => {
+    setValueFilter(status);
   };
 
   return (
-    <div className="panel-tabs">
-      <a
-        href="#"
-        onClick={e => handleClick('ALL', e)}
-        className={value === 'ALL' ? 'is-active' : ''}
-      >全て</a>
-      <a
-        href="#"
-        onClick={e => handleClick('TODO', e)}
-        className={value === 'TODO' ? 'is-active' : ''}
-      >未完了</a>
-      <a
-        href="#"
-        onClick={e => handleClick('DONE', e)}
-        className={value === 'DONE' ? 'is-active' : ''}
-      >完了済み</a>
-    </div>
+    <>
+      <div className='panel-tabs'>
+        <a href='#' onClick={() => handleClick('all')} className={valueFilter === 'all' ? 'is-active' : ''}>
+          全て
+        </a>
+        <a href='#' onClick={() => handleClick('todo')} className={valueFilter === 'todo' ? 'is-active' : ''}>
+          未完了
+        </a>
+        <a href='#' onClick={() => handleClick('done')} className={valueFilter === 'done' ? 'is-active' : ''}>
+          完了済み
+        </a>
+      </div>
+      {displayItems.map((item) => (
+        <TodoItem key={item.id} item={item} onCheck={handleCheck} />
+      ))}
+      <div className='panel-block'>{displayItems.length} items</div>
+    </>
   );
 }
 
-export default Filter
+export default Filter;
