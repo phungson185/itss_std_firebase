@@ -26,3 +26,11 @@ export const updateFirebaseItems = async (item) => {
     console.log(error);
   }
 }
+
+export const deleteFirebaseItems = async (item) => {
+  try {
+    await db.collection('todos').doc(item.id).delete();
+  } catch (error) {
+    console.log(error);
+  }
+}

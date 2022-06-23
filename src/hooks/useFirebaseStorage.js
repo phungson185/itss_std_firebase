@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { getFirebaseItems, addFirebaseItems, updateFirebaseItems } from '../services';
+import { getFirebaseItems, addFirebaseItems, updateFirebaseItems, deleteFirebaseItems } from '../services';
 
 export const useFirebaseStorage = () => {
   const [items, setItems] = useState([]);
@@ -20,34 +20,10 @@ export const useFirebaseStorage = () => {
     setItems(items.map((i) => (i.id === item.id ? item : i)));
   };
 
-  return [items, addTodo, updateTodo];
+  const deleteAllTodo = async () => {
+    await Promise.all(items.map((i) => deleteFirebaseItems(i)));
+    setItems([]);
+  }
+
+  return [items, addTodo, updateTodo, deleteAllTodo];
 };
-
-// function useStorage() {
-//   const [items, setItems] = useState([]);
-
-//   useEffect(() => {
-//     const data = localStorage.getItem(STORAGE_KEY);
-
-//     if (!data) {
-//       localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
-//     } else {
-//       setItems(JSON.parse(data));
-//     }
-//   }, []);
-
-//   const putItems = items => {
-//     localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-//     setItems  (items);
-//   };
-
-//   const clearItems = () => {
-//     localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
-//     setItems([]);
-
-//   };
-
-//   return [items, putItems, clearItems];
-// }
-
-// export default useStorage;
