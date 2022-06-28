@@ -5,9 +5,12 @@ import { getFirebaseItems, addFirebaseItems, updateFirebaseItems, deleteFirebase
 export const useFirebaseStorage = () => {
   const [items, setItems] = useState([]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(async () => {
-    setItems(await getFirebaseItems());
+  useEffect( () => {
+    async function fetchData() {
+      const items = await getFirebaseItems();
+      setItems(items);
+    }
+    fetchData();
   }, []);
 
   const addTodo = async (item) => {

@@ -1,12 +1,7 @@
-import React, { useState } from 'react';
-
-/* コンポーネント */
-import TodoItem from './TodoItem';
-import Input from './Input';
 import Filter from './Filter';
+import Input from './Input';
 
-/* カスタムフック */
-import { useFirebaseStorage } from '../hooks/';
+import { useFirebaseStorage } from 'hooks';
 
 function Todo() {
   const [items, addTodo, updateTodo, deleteAllTodo] = useFirebaseStorage();

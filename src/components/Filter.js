@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import TodoItem from './TodoItem';
 import { useEffect, useState } from 'react';
 

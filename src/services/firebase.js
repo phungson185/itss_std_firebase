@@ -52,14 +52,5 @@ export const storeUserInfo = async (user) => {
       .collection('users')
       .doc(uid)
       .set({ name: user.displayName });
-    return {
-      name: user.displayName,
-      id: uid,
-    };
-  } else {
-    return {
-      id: uid,
-      ...userDoc.data(),
-    };
   }
 };
