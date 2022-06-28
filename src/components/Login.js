@@ -2,19 +2,21 @@ import firebase from 'firebase/compat';
 import { useEffect, useState } from 'react';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import { uiConfig } from '../lib';
-import { storeUserInfo } from '../services';
+import { storeUserInfo, updateUser } from '../services';
 import Todo from './Todo';
+import Upload from './UpLoad';
 
 function Login() {
   const [isReady, setIsReady] = useState(false);
   const [isSignedIn, setIsSignedIn] = useState(false);
+  const [user, setUser] = useState([]);
 
   useEffect(() => {
-    const unregisterAuthObserver = firebase.auth().onAuthStateChanged((user) => {
+    const unregisterAuthObserver = firebase.auth().onAuthStateChanged(async (user) => {
       setIsReady(true);
       setIsSignedIn(!!user);
       if (user) {
-        storeUserInfo(user);
+        setUser(await storeUserInfo(user));
       }
     });
     return () => unregisterAuthObserver();
@@ -31,14 +33,22 @@ function Login() {
       </div>
     );
   }
+
+  const handleImageChanged = async (downloadUrl) => {
+    await updateUser(user, downloadUrl);
+  };
+
   return (
-    <div>
-      <p>Welcome {firebase.auth().currentUser.displayName}! You are now signed-in!</p>
-      <button className='button is-danger is-light is-small' onClick={() => firebase.auth().signOut()}>
-        Sign-out
-      </button>
+    <>
+      <div className='columns'>
+        <Upload className='column' userImage={user.image} onSelectedImage={handleImageChanged} />
+        <p className='column'>{firebase.auth().currentUser.displayName}</p>
+        <button className='column button is-danger is-1' onClick={() => firebase.auth().signOut()}>
+          Sign-out
+        </button>
+      </div>
       <Todo />
-    </div>
+    </>
   );
 }
 

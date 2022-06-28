@@ -5,7 +5,7 @@ import { getFirebaseItems, addFirebaseItems, updateFirebaseItems, deleteFirebase
 export const useFirebaseStorage = () => {
   const [items, setItems] = useState([]);
 
-  useEffect( () => {
+  useEffect(() => {
     async function fetchData() {
       const items = await getFirebaseItems();
       setItems(items);
